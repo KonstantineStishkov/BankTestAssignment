@@ -1,5 +1,5 @@
-﻿using BankDataApi.Models;
-using Dapper;
+﻿using Dapper;
+using Entities.Models;
 using Npgsql;
 
 namespace BankDataApi.Storage

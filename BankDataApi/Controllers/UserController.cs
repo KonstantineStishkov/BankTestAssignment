@@ -1,23 +1,21 @@
-using BankDataApi.Models;
 using BankDataApi.Storage;
+using Entities.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankDataApi.Controllers
 {
     [ApiController]
+    [EnableCors("AllowOrigins")]
     public class UserController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<UserController> _logger;
         private readonly UserCardStorage _storage;
 
         public UserController(ILogger<UserController> logger, IConfiguration config)
         {
             _logger = logger;
+            logger.Log(LogLevel.Information, config["ConnectionStrings:DefaultConnection"]);
             _storage = new UserCardStorage(config["ConnectionStrings:DefaultConnection"] ?? "");
         }
 
