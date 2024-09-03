@@ -5,6 +5,10 @@ VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataApi", "BankDataApi\BankDataApi.csproj", "{B4457444-0DC3-476D-A17B-05368B2D0F56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankWebApp", "BankWebApp\BankWebApp.csproj", "{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{32D7428C-00F9-4AD4-A235-8AF24480D5AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B4457444-0DC3-476D-A17B-05368B2D0F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4457444-0DC3-476D-A17B-05368B2D0F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4457444-0DC3-476D-A17B-05368B2D0F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
