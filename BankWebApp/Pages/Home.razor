@@ -1,0 +1,191 @@
+﻿@page "/"
+@using Entities.Models;
+@inject IConfiguration Config
+@inject HttpClient Http
+
+<PageTitle>Home</PageTitle>
+
+<div class="users-page">
+    <div class="toolbar-row">
+        <div class="left-part">
+            <div class="add-tab">
+                <button class="btn toolbar-btn add-btn" @onclick=CreateNewUser >
+                    <img src="icons/square-plus.svg" class="icon toolbar-icon add-icon" />
+                    <div class="btn-label">
+                        Добавить нового пользователя
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="right-part">
+            <div class="search-tab">
+                <img src="icons/magnifying-glass.svg" class="icon toolbar-icon search-icon" />
+                <input class="input toolbar-input search-input" @bind-value=Filter @bind-value:event="oninput" />
+            </div>
+            <div class="refresh-tab">
+                <button class="btn toolbar-btn refresh-btn" type="button" @onclick=StateHasChanged><img src="icons/arrow-rotate-right.svg" class="icon toolbar-icon refresh-icon" /></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="users-table">
+        <div class="ut-headers-row ut-row">
+            <div class="ut-header fio-tab">ФИО пользователя</div>
+            <div class="ut-header btn-tab"><img src="icons/pencil.svg" class="icon header-icon" /></div>
+            <div class="ut-header btn-tab"><img src="icons/circle-xmark.svg" class="icon header-icon" /></div>
+        </div>
+
+        @if (_data is null || _data.Count() == 0)
+        {
+            <div class="whole-table-msg ut-row">Нет ни одного пользователя в системе </div>
+        }
+        else
+        {
+            foreach (User user in _data.Where(u => string.IsNullOrWhiteSpace(Filter) || u.FirstName.Contains(Filter) || u.MiddleName.Contains(Filter) || u.LastName.Contains(Filter)))
+            {
+                <div class="ut-data-row ut-row">
+                    <div class="ut-data fio-tab">@user.Fio</div>
+                    <div class="ut-data btn-tab"><img src="icons/pencil.svg" class="icon data-icon" @onclick="() => OpenUserEdit(user.Id)" /></div>
+                    <div class="ut-data btn-tab"><img src="icons/circle-xmark.svg" class="icon data-icon" @onclick="() => DeleteUser(user.Id)" /></div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@if(_selected == null)
+{
+    return;
+}
+
+<div class="edit-user">
+    <div class="edit-header">Пользователь</div>
+    <div class="edit-form">
+        <div class="form-row">
+            <div class="f-label fio-label">Фамилия</div>
+            <div class="n-label fio-label">Имя</div>
+            <div class="m-label fio-label">Отчество</div>
+        </div>
+        <div class="form-row">
+            <input type="text" class="fio-input" @bind-value=_selected.LastName />
+            <input type="text" class="fio-input" @bind-value=_selected.FirstName />
+            <input type="text" class="fio-input" @bind-value=_selected.MiddleName />
+        </div>
+        <div class="form-row">
+            <div class="date-label">Дата Рождения</div>
+            <input type="date" class="date-input" min="1900-01-01" max="2025-01-01" @bind-value=_selected.BirthDate />
+        </div>
+        <div class="form-row">
+            <div class="text-label">Место работы</div>
+            <input type="text" class="text-input" @bind-value=_selected.WorkPlace />
+        </div>
+        <div class="form-row">
+            <div class="f-d-btn"><button class="f-btn" type="button" @onclick=SaveCurrent>Сохранить</button></div>
+            <div class="f-d-btn"><button class="f-btn" type="button" @onclick=CancelCurrent>Отменить</button></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _filter = string.Empty;
+    private IEnumerable<User>? _data;
+    private User? _selected;
+
+    public string Filter
+    {
+        get
+        {
+            return _filter;
+        }
+        set
+        {
+            _filter = value;
+            LoadData();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        LoadData();
+    }
+
+    private void CreateNewUser()
+    {
+        _selected = new User();
+        StateHasChanged();
+    }
+
+    private void OpenUserEdit(string id)
+    {
+        _selected = _data.FirstOrDefault(u => u.Id.Equals(id));
+        StateHasChanged();
+    }
+
+    private void CancelCurrent()
+    {
+        _selected = null;
+        StateHasChanged();
+    }
+
+    private void SaveCurrent()
+    {
+        if (string.IsNullOrWhiteSpace(_selected?.Id))
+        {
+            InsertCurrent();
+        }
+        else
+        {
+            UpdateCurrent();
+        }
+
+        _selected = null;
+        LoadData();
+    }
+
+    private void InsertCurrent()
+    {
+        string format = "{0}/user/insert";
+
+        string url = string.Format(format, Config["ApiBaseAddress"]);
+
+        Http.PostAsJsonAsync<User?>(url, _selected);
+
+    }
+
+    private void UpdateCurrent()
+    {
+        string format = "{0}/user/update";
+
+        string url = string.Format(format, Config["ApiBaseAddress"]);
+
+        Http.PostAsJsonAsync<User?>(url, _selected);
+    }
+
+    private void DeleteUser(string id)
+    {
+        string format = "{0}/user/delete/{1}";
+
+        string url = string.Format(format, Config["ApiBaseAddress"], id);
+
+        Http.DeleteFromJsonAsync<int>(url);
+    }
+
+    private async Task LoadData()
+    {
+        string format = "{0}/user";
+
+        string url = string.Format(format, Config["ApiBaseAddress"]);
+
+        Console.WriteLine(url);
+
+        _data = await Http.GetFromJsonAsync<IEnumerable<User>>(url);
+
+        foreach(var a in _data)
+        {
+            Console.WriteLine(a.LastName);
+        }
+
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,163 @@
+﻿.users-page {
+}
+
+.toolbar-row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    background-color: lightblue;
+    height: 60px;
+}
+
+.left-part {
+    margin: 5px;
+    display: flex;
+    flex-flow: row;
+    height: 100%;
+}
+
+.right-part {
+    margin: 5px;
+    display: flex;
+    flex-flow: row;
+    height: 100%;
+}
+
+.add-tab {
+    height: 100%;
+}
+
+.btn {
+    background-color: inherit;
+    border-color: aqua;
+    border-radius: 10px;
+}
+
+    .btn:hover {
+        background-color: #a2e7e7;
+    }
+
+.toolbar-btn {
+    height: 80%;
+    display: flex;
+    flex-flow: row;
+}
+
+.search-tab {
+    margin: 5px 10px 5px 10px;
+    height: 60%;
+    display: flex;
+    flex-flow: row;
+}
+
+.search-icon {
+    margin-right: 10px;
+    height: 80%;
+}
+
+.users-table {
+    width: 500px;
+    background-color: #c4e1e1;
+    border: solid;
+    border-color: #99afaf;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column;
+}
+
+.ut-row {
+    display: flex;
+    flex-flow: row;
+}
+
+.fio-tab {
+    width: 70%;
+}
+
+.btn-tab {
+    width: 15%;
+}
+
+.icon {
+    width: 3vw;
+}
+
+.toolbar-icon {
+    height: 100%;
+}
+
+.data-icon {
+    filter: invert(55%) sepia(43%) saturate(4452%) hue-rotate(159deg) brightness(92%) contrast(101%);
+    width: 20px;
+}
+
+.edit-user {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 500px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.edit-header {
+    width: 100%;
+    background-color: #99afaf;
+    font-size: 2em;
+    text-align: center;
+}
+
+.edit-form {
+    background-color: #fefefe;
+}
+
+.form-row {
+    display: flex;
+    flex-flow: row;
+    margin: 5px;
+}
+
+.fio-label {
+    width: 30%;
+    text-align: center;
+}
+
+.fio-input {
+    width: 30%;
+    margin: 0px 5px 0px 5px;
+}
+
+.date-label {
+    margin: 0px 5px 0px 5px;
+}
+
+.date-input {
+    margin: 0px 5px 0px 5px;
+}
+
+.text-label {
+    margin: 0px 5px 0px 5px;
+}
+
+.text-input {
+    margin: 0px 5px 0px 5px;
+}
+
+.f-d-btn {
+    margin: 0px 5px 0px 5px;
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
