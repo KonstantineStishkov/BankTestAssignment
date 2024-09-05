@@ -23,7 +23,7 @@
                 <input class="input toolbar-input search-input" @bind-value=Filter @bind-value:event="oninput" />
             </div>
             <div class="refresh-tab">
-                <button class="btn toolbar-btn refresh-btn" type="button" @onclick=StateHasChanged><img src="icons/arrow-rotate-right.svg" class="icon toolbar-icon refresh-icon" /></button>
+                <button class="btn toolbar-btn refresh-btn" type="button" @onclick=LoadData><img src="icons/arrow-rotate-right.svg" class="icon toolbar-icon refresh-icon" /></button>
             </div>
         </div>
     </div>
@@ -53,43 +53,70 @@
     </div>
 </div>
 
-@if(_selected == null)
+@if(_selected != null)
 {
-    return;
-}
-
-<div class="edit-user">
-    <div class="edit-header">Пользователь</div>
-    <div class="edit-form">
-        <div class="form-row">
-            <div class="f-label fio-label">Фамилия</div>
-            <div class="n-label fio-label">Имя</div>
-            <div class="m-label fio-label">Отчество</div>
-        </div>
-        <div class="form-row">
-            <input type="text" class="fio-input" @bind-value=_selected.LastName />
-            <input type="text" class="fio-input" @bind-value=_selected.FirstName />
-            <input type="text" class="fio-input" @bind-value=_selected.MiddleName />
-        </div>
-        <div class="form-row">
-            <div class="date-label">Дата Рождения</div>
-            <input type="date" class="date-input" min="1900-01-01" max="2025-01-01" @bind-value=_selected.BirthDate />
-        </div>
-        <div class="form-row">
-            <div class="text-label">Место работы</div>
-            <input type="text" class="text-input" @bind-value=_selected.WorkPlace />
-        </div>
-        <div class="form-row">
-            <div class="f-d-btn"><button class="f-btn" type="button" @onclick=SaveCurrent>Сохранить</button></div>
-            <div class="f-d-btn"><button class="f-btn" type="button" @onclick=CancelCurrent>Отменить</button></div>
+    <div class="edit-user">
+        <div class="edit-header">Пользователь</div>
+        <div class="edit-form">
+            <div class="form-row">
+                <div class="f-label fio-label">Фамилия</div>
+                <div class="n-label fio-label">Имя</div>
+                <div class="m-label fio-label">Отчество</div>
+            </div>
+            <div class="form-row">
+                <input type="text" class="fio-input h-input" @bind-value=_selected.LastName />
+                <input type="text" class="fio-input h-input" @bind-value=_selected.FirstName />
+                <input type="text" class="fio-input h-input" @bind-value=_selected.MiddleName />
+            </div>
+            <div class="form-row">
+                <div class="date-label">Дата Рождения</div>
+                <input type="date" class="date-input h-input" min="1900-01-01" max="2025-01-01" @bind-value=_selected.BirthDate />
+            </div>
+            <div class="form-row">
+                <div class="text-label">Место работы</div>
+                <input type="text" class="text-input h-input" @bind-value=_selected.WorkPlace />
+            </div>
+            <div class="card-tab">
+                <div class="card-tab-row">
+                    <div class="card-header c-acc-tab">Счет</div>
+                    <div class="card-header c-fio-tab">ФИО</div>
+                    <div class="card-header c-exp-tab">Срок</div>
+                    <div class="card-header c-cvc-tab">CVC</div>
+                    <div class="card-header c-dlt-tab"></div>
+                </div>
+                <div class="card-tab-row">
+                    <div class="card-data c-acc-tab"><input type="text" class="card-input h-input" @bind-value=_newCard.Account /></div>
+                    <div class="card-data c-fio-tab">@_latin</div>
+                    <div class="card-data c-exp-tab"><input type="date" class="card-input h-input" @bind-value=_newCard.Expiration /></div>
+                    <div class="card-data c-cvc-tab"><input type="number" maxlength="3" class="card-input h-input" @bind-value=_newCard.Cvc /></div>
+                    <div class="card-data c-dlt-tab"></div>
+                </div>
+                @foreach (var card in _selected.Cards)
+                {
+                    <div class="card-tab-row">
+                        <div class="card-data c-acc-tab"><input type="text" class="card-input h-input" @bind-value=card.Account /></div>
+                        <div class="card-data c-fio-tab">@_latin</div>
+                        <div class="card-data c-exp-tab"><input type="date" class="card-input h-input" @bind-value=card.Expiration /></div>
+                        <div class="card-data c-cvc-tab"><input type="number" maxlength="3" class="card-input h-input" @bind-value=card.Cvc /></div>
+                        <div class="card-data c-dlt-tab"><img src="icons/circle-xmark.svg" class="icon data-icon" @onclick="() => DeleteCard(card.Id)" /></div>
+                    </div>
+                }
+            </div>
+            <div class="form-row">
+                <div class="f-d-btn"><button class="f-btn" type="button" @onclick=SaveCurrent>Сохранить</button></div>
+                <div class="f-d-btn"><button class="f-btn" type="button" @onclick=CancelCurrent>Отменить</button></div>
+            </div>
         </div>
     </div>
-</div>
+}
+
 
 @code {
     private string _filter = string.Empty;
     private IEnumerable<User>? _data;
     private User? _selected;
+    private CreditCard _newCard = new CreditCard();
+    private string _latin => User.ToLat(_selected?.Fio ?? string.Empty);
 
     public string Filter
     {
@@ -107,7 +134,11 @@
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
-        LoadData();
+
+        if(firstRender)
+        {
+            LoadData();
+        }
     }
 
     private void CreateNewUser()
@@ -130,60 +161,74 @@
 
     private void SaveCurrent()
     {
-        if (string.IsNullOrWhiteSpace(_selected?.Id))
-        {
-            InsertCurrent();
-        }
-        else
-        {
-            UpdateCurrent();
-        }
+        bool isnew = string.IsNullOrWhiteSpace(_selected?.Id);
+
+        ModifyCurrent(isnew);
 
         _selected = null;
+    }
+
+    private async Task ModifyCurrent(bool isnew = false)
+    {
+        string format = "{0}/user/{1}";
+        string command = isnew ? "insert" : "update";
+
+        if (_selected is null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(_newCard.Account) && _newCard.Expiration > DateTime.Now && _newCard.Cvc > 0)
+        {
+            _newCard.IdUser = _selected.Id;
+            _newCard.Id = Guid.NewGuid().ToString();
+            if (_selected?.Cards is null)
+            {
+                _selected.Cards = new List<CreditCard>();
+            }
+
+            _selected.Cards.Add(_newCard);
+        }
+
+        string url = string.Format(format, Config["ApiBaseAddress"], command);
+
+        await Http.PostAsJsonAsync<User?>(url, _selected);
+
+        _newCard = new CreditCard();
+
         LoadData();
     }
 
-    private void InsertCurrent()
-    {
-        string format = "{0}/user/insert";
-
-        string url = string.Format(format, Config["ApiBaseAddress"]);
-
-        Http.PostAsJsonAsync<User?>(url, _selected);
-
-    }
-
-    private void UpdateCurrent()
-    {
-        string format = "{0}/user/update";
-
-        string url = string.Format(format, Config["ApiBaseAddress"]);
-
-        Http.PostAsJsonAsync<User?>(url, _selected);
-    }
-
-    private void DeleteUser(string id)
+    private async Task DeleteUser(string id)
     {
         string format = "{0}/user/delete/{1}";
-
         string url = string.Format(format, Config["ApiBaseAddress"], id);
 
-        Http.DeleteFromJsonAsync<int>(url);
+        await Http.DeleteFromJsonAsync<int>(url);
+
+        LoadData();
+    }
+
+    private async Task DeleteCard(string id)
+    {
+        string format = "{0}/card/delete/{1}";
+        string url = string.Format(format, Config["ApiBaseAddress"], id);
+
+        await Http.DeleteFromJsonAsync<int>(url);
+
+        LoadData();
     }
 
     private async Task LoadData()
     {
         string format = "{0}/user";
-
         string url = string.Format(format, Config["ApiBaseAddress"]);
-
-        Console.WriteLine(url);
 
         _data = await Http.GetFromJsonAsync<IEnumerable<User>>(url);
 
-        foreach(var a in _data)
+        if(_selected != null)
         {
-            Console.WriteLine(a.LastName);
+            _selected = _data?.FirstOrDefault(u => u.Id.Equals(_selected?.Id));
         }
 
         StateHasChanged();
