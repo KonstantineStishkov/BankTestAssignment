@@ -119,9 +119,18 @@ namespace BankDataApi.Storage
 
                 if (model.Cards != null && model.Cards.Count() > 0)
                 {
+                    var oldcards = await GetCards(model.Id);
+
                     foreach (var card in model.Cards)
                     {
-                        result += await UpdateCard(card);
+                        if(oldcards?.Any(c => c.Id.Equals(card.Id)) ?? false)
+                        {
+                            result += await UpdateCard(card);
+                        }
+                        else
+                        {
+                            result += await InsertCard(card);
+                        }
                     }
                 }
 
