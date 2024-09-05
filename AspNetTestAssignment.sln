@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankDataApi", "BankDataApi\BankDataApi.csproj", "{B4457444-0DC3-476D-A17B-05368B2D0F56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankDataApi", "BankDataApi\BankDataApi.csproj", "{B4457444-0DC3-476D-A17B-05368B2D0F56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankWebApp", "BankWebApp\BankWebApp.csproj", "{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankWebApp", "BankWebApp\BankWebApp.csproj", "{882935E9-7C4E-4A78-82DD-A3C67DF62EB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{32D7428C-00F9-4AD4-A235-8AF24480D5AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{32D7428C-00F9-4AD4-A235-8AF24480D5AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitiesTests", "EntitiesTests\EntitiesTests.csproj", "{565EC31D-5D21-439F-A805-5401FBFBBCC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32D7428C-00F9-4AD4-A235-8AF24480D5AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565EC31D-5D21-439F-A805-5401FBFBBCC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565EC31D-5D21-439F-A805-5401FBFBBCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565EC31D-5D21-439F-A805-5401FBFBBCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565EC31D-5D21-439F-A805-5401FBFBBCC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
