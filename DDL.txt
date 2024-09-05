@@ -1,0 +1,19 @@
+CREATE TABLE public.users (
+	iduser varchar NOT NULL,
+	birthdate date NOT NULL,
+	workplace varchar NOT NULL,
+	first_name varchar NOT NULL,
+	middle_name varchar NULL,
+	last_name varchar NOT NULL,
+	CONSTRAINT users_unique UNIQUE (iduser)
+);
+
+CREATE TABLE public.creditcards (
+	idcard varchar NOT NULL,
+	account varchar NOT NULL,
+	expiration_date date NOT NULL,
+	cvc int4 NOT NULL,
+	iduser varchar NOT NULL,
+	CONSTRAINT creditcards_unique UNIQUE (idcard),
+	CONSTRAINT creditcards_users_fk FOREIGN KEY (iduser) REFERENCES public.users(iduser) ON DELETE CASCADE ON UPDATE CASCADE
+);

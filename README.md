@@ -30,6 +30,6 @@
 Инструкция по запуску:
 1. Установить и настроить PotgreSQL БД
 2. В BankDataApi в appsettings.json указать ConnectionString
-3. Запустить и настроить BankDataApi
+3. Запустить и настроить BankDataApi (Скрипт настройки структуры БД в файле DDL.txt)
 4. В BankWebApp в appsettings.json указать адрес, по которому необходимо обращаться к BankDataApi
 5. Запустить BankWebApp (для настройки nginx в качестве основы прилагаю файл bankapp.conf)
